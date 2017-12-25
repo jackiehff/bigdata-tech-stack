@@ -45,7 +45,7 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'大数据学习技术栈'
+project = u'大数据技术栈学习笔记'
 copyright = '2017, jackiehff'
 author = 'jackiehff'
 
