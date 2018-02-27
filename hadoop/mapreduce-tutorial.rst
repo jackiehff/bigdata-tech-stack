@@ -2,6 +2,8 @@
 MapReduce开发教程
 ################################
 
+本文翻译自 Apache Hadoop 官方文档 `MapReduce Tutorial <http://hadoop.apache.org/docs/current/hadoop-mapreduce-client/hadoop-mapreduce-client-core/MapReduceTutorial.html>`_ 。
+
 * :ref:`purpose`
 * :ref:`prerequisites`
 * :ref:`overview`
