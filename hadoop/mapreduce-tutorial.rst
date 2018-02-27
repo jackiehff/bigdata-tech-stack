@@ -63,8 +63,8 @@ MapReduce开发教程
 
 请先确保已经正确地安装和配置 Hadoop 并且已经成功地运行 Hadoop。更多细节参见:
 
-* `单节点集群搭建 <http://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-common/SingleCluster.html>`_ - 针对首次使用 Hadoop 的用户。
-* `分布式集群搭建 <http://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-common/ClusterSetup.html>`_ - 针对大规模分布式集群。
+* `单节点集群搭建 <http://hadoop.apache.org/docs/current/hadoop-project-dist/hadoop-common/SingleCluster.html>`_ - 针对首次使用 Hadoop 的用户。
+* `分布式集群搭建 <http://hadoop.apache.org/docs/current/hadoop-project-dist/hadoop-common/ClusterSetup.html>`_ - 针对大规模分布式集群。
 
 .. _overview:
 
@@ -86,8 +86,8 @@ Hadoop作业客户端将作业(jar或可执行文件等)和配置提交给 Resou
 
 尽管 Hadoop 框架是用 Java™ 实现的, 但是 MapReduce 应用程序不一定要用 Java 编写。
 
-* `Hadoop Streaming <http://hadoop.apache.org/docs/stable/api/org/apache/hadoop/streaming/package-summary.html>`_ 是一个实用程序，它允许用户使用任何可执行文件(比如 shell 实用程序) 作为 mapper 和/或 reducer 来创建和运行作业。
-* `Hadoop Pipes <http://hadoop.apache.org/docs/stable/api/org/apache/hadoop/mapred/pipes/package-summary.html>`_ 是一个兼容 `SWIG <http://www.swig.org>`_ 的 C++ API，用于实现 MapReduce 应用程序(不是基于 JNI™)。
+* `Hadoop Streaming <http://hadoop.apache.org/docs/current/api/org/apache/hadoop/streaming/package-summary.html>`_ 是一个实用程序，它允许用户使用任何可执行文件(比如 shell 实用程序) 作为 mapper 和/或 reducer 来创建和运行作业。
+* `Hadoop Pipes <http://hadoop.apache.org/docs/current/api/org/apache/hadoop/mapred/pipes/package-summary.html>`_ 是一个兼容 `SWIG <http://www.swig.org>`_ 的 C++ API，用于实现 MapReduce 应用程序(不是基于 JNI™)。
 
 
 .. _inputs_and_outputs:
@@ -117,7 +117,7 @@ key 和 value 类需要被框架序列化，因此需要实现 `Writable <http:/
 
 WordCount 是一个简单的应用程序，它统计给定输入数据集中每个单词出现的次数。
 
-它可以运行于单机模式、伪分布式模式或完全分布式模式下安装的 Hadoop(`单节点集群搭建 <http://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-common/SingleCluster.html>`_)。
+它可以运行于单机模式、伪分布式模式或完全分布式模式下安装的 Hadoop(`单节点集群搭建 <http://hadoop.apache.org/docs/current/hadoop-project-dist/hadoop-common/SingleCluster.html>`_)。
 
 
 .. _example_wordcount_v1_source_code:
@@ -384,25 +384,25 @@ Payload
 Mapper
 --------------------------------
 
-`Mapper <http://hadoop.apache.org/docs/stable/api/org/apache/hadoop/mapreduce/Mapper.html>`_ 将输入的键值对映射成一组中间键值对。
+`Mapper <http://hadoop.apache.org/docs/current/api/org/apache/hadoop/mapreduce/Mapper.html>`_ 将输入的键值对映射成一组中间键值对。
 
 map 是将输入记录转换为中间记录的单个任务。转换的中间记录不需要与输入记录具有相同的类型。一个给定的输入键值对可能映射到零个或多个输出键值对。
 
 Hadoop MapReduce 框架为作业的 InputFormat 生成的每个 InputSplit 产生一个 map 任务。
 
-总的来说，mapper 实现是通过 `Job.setMapperClass(Class) <http://hadoop.apache.org/docs/stable/api/org/apache/hadoop/mapreduce/Job.html>`_ 方法传递给作业的。然后，框架为任务的 InputSplit 中的每个键值对调用 `map(WritableComparable, Writable, Context) <http://hadoop.apache.org/docs/stable/api/org/apache/hadoop/mapreduce/Mapper.html>`_ 。最后，应用程序可以重写 ``cleanup(Context)`` 方法来执行任何所需的清理工作。
+总的来说，mapper 实现是通过 `Job.setMapperClass(Class) <http://hadoop.apache.org/docs/current/api/org/apache/hadoop/mapreduce/Job.html>`_ 方法传递给作业的。然后，框架为任务的 InputSplit 中的每个键值对调用 `map(WritableComparable, Writable, Context) <http://hadoop.apache.org/docs/current/api/org/apache/hadoop/mapreduce/Mapper.html>`_ 。最后，应用程序可以重写 ``cleanup(Context)`` 方法来执行任何所需的清理工作。
 
 输出键值对不需要与输入键值对的类型相同。一个给定的输入键值对可能映射到零个或多个输出键值对。 输出键值对通过调用 ``context.write(WritableComparable, Writable)`` 方法进行收集。
 
 应用程序可以使用 Counter 报告其统计数据。
 
-所有与给定输出键相关的中间值随后由框架进行分组并传递给 Reducer 以确定最终输出。用户可以通过 `Job.setGroupingComparatorClass(Class) <http://hadoop.apache.org/docs/stable/api/org/apache/hadoop/mapreduce/Job.html>`_ 指定一个比较器来控制分组。
+所有与给定输出键相关的中间值随后由框架进行分组并传递给 Reducer 以确定最终输出。用户可以通过 `Job.setGroupingComparatorClass(Class) <http://hadoop.apache.org/docs/current/api/org/apache/hadoop/mapreduce/Job.html>`_ 指定一个比较器来控制分组。
 
 Mapper 输出会被排序，然后按 Reducer 进行分区。分区总数与作业的 reduce 任务数相同。用户可以实现一个自定义的分区控制器来控制哪些键(以及记录)分发到哪个Reducer。
 
-用户可以选择通过 `Job.setCombinerClass(Class) <http://hadoop.apache.org/docs/stable/api/org/apache/hadoop/mapreduce/Job.html>`_ 指定一个 combiner 来执行中间输出的本地聚合, 这样可以减少从 Mapper 到 Reducer 传输的数据量。
+用户可以选择通过 `Job.setCombinerClass(Class) <http://hadoop.apache.org/docs/current/api/org/apache/hadoop/mapreduce/Job.html>`_ 指定一个 combiner 来执行中间输出的本地聚合, 这样可以减少从 Mapper 到 Reducer 传输的数据量。
 
-中间的排序输出总是以简单的(key-len，key，value-len，value)格式存储。应用程序可以通过 Configuration 控制是否以及如何对中间输出进行压缩以及如何使用 `CompressionCodec <http://hadoop.apache.org/docs/stable/api/org/apache/hadoop/io/compress/CompressionCodec.html>`_。
+中间的排序输出总是以简单的(key-len，key，value-len，value)格式存储。应用程序可以通过 Configuration 控制是否以及如何对中间输出进行压缩以及如何使用 `CompressionCodec <http://hadoop.apache.org/docs/current/api/org/apache/hadoop/io/compress/CompressionCodec.html>`_。
 
 
 Map数量
@@ -419,11 +419,11 @@ map 正确的并行度大概是每个节点 10-100 个 map，尽管有些 CPU �
 Reducer
 --------------------------------
 
-`Reducer <http://hadoop.apache.org/docs/stable/api/org/apache/hadoop/mapreduce/Reducer.html>`_ 将共享一个key的一组中间值归并为一个小的数值集。
+`Reducer <http://hadoop.apache.org/docs/current/api/org/apache/hadoop/mapreduce/Reducer.html>`_ 将共享一个key的一组中间值归并为一个小的数值集。
 
-用户可以通过 `Job.setNumReduceTasks(int) <http://hadoop.apache.org/docs/stable/api/org/apache/hadoop/mapreduce/Job.html>`_ 来设置作业的 reduce 数量。
+用户可以通过 `Job.setNumReduceTasks(int) <http://hadoop.apache.org/docs/current/api/org/apache/hadoop/mapreduce/Job.html>`_ 来设置作业的 reduce 数量。
 
-总的来说，Reducer 实现通过 `Job.setReducerClass(Class) <http://hadoop.apache.org/docs/stable/api/org/apache/hadoop/mapreduce/Job.html>`_ 方法传递给作业，并可以重写它以初始化它们自己。然后，框架为分组输入中的每个 ``<key, (list of values)>`` 对调用 `reduce(WritableComparable, Iterable, Context) <http://hadoop.apache.org/docs/stable/api/org/apache/hadoop/mapreduce/Reducer.html>`_ 方法。最后，应用程序可以重写 ``cleanup(Context)`` 方法来执行任何所需的清理工作。
+总的来说，Reducer 实现通过 `Job.setReducerClass(Class) <http://hadoop.apache.org/docs/current/api/org/apache/hadoop/mapreduce/Job.html>`_ 方法传递给作业，并可以重写它以初始化它们自己。然后，框架为分组输入中的每个 ``<key, (list of values)>`` 对调用 `reduce(WritableComparable, Iterable, Context) <http://hadoop.apache.org/docs/current/api/org/apache/hadoop/mapreduce/Reducer.html>`_ 方法。最后，应用程序可以重写 ``cleanup(Context)`` 方法来执行任何所需的清理工作。
 
 Reducer 有3个主要阶段: shuffle, sort 和 reduce。
 
@@ -442,7 +442,7 @@ shuffle 和 sort 两个阶段是同时发生的；map 的输出一遍取出一�
 Secondary Sort
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-如果用于分组中间键的等价规则需要区别于reduce之前用于分组键的等价规则, 那么可以通过 `Job.setSortComparatorClass(Class) <http://hadoop.apache.org/docs/stable/api/org/apache/hadoop/mapreduce/Job.html>`_ 指定一个比较器。由于可以使用 `Job.setGroupingComparatorClass(Class) <http://hadoop.apache.org/docs/stable/api/org/apache/hadoop/mapreduce/Job.html>`_ 来控制中间键的分组方式，因此可以结合使用它们来模拟次要排序值。
+如果用于分组中间键的等价规则需要区别于reduce之前用于分组键的等价规则, 那么可以通过 `Job.setSortComparatorClass(Class) <http://hadoop.apache.org/docs/current/api/org/apache/hadoop/mapreduce/Job.html>`_ 指定一个比较器。由于可以使用 `Job.setGroupingComparatorClass(Class) <http://hadoop.apache.org/docs/current/api/org/apache/hadoop/mapreduce/Job.html>`_ 来控制中间键的分组方式，因此可以结合使用它们来模拟次要排序值。
 
 
 Reduce
@@ -450,7 +450,7 @@ Reduce
 
 在这个阶段中, 会为分组输入中的每个 ``<key, (list of values)>`` 对调用 ``reduce(WritableComparable, Iterable<Writable>, Context)`` 方法。
 
-reduce 任务的输出通常是通过 ``Context.write(WritableComparable, Writable)`` 写入 `文件系统 <http://hadoop.apache.org/docs/stable/api/org/apache/hadoop/fs/FileSystem.html>`_ 的。
+reduce 任务的输出通常是通过 ``Context.write(WritableComparable, Writable)`` 写入 `文件系统 <http://hadoop.apache.org/docs/current/api/org/apache/hadoop/fs/FileSystem.html>`_ 的。
 
 应用程序可以使用 Counter 来报告其统计数据。
 
@@ -501,18 +501,18 @@ Hadoop MapReduce 附带一个包含通用的 mapper, reducers 以及 partitioner
 作业配置
 ================================
 
-`Job <http://hadoop.apache.org/docs/stable/api/org/apache/hadoop/mapreduce/Job.html>`_ 代表一个 MapReduce 作业的配置。
+`Job <http://hadoop.apache.org/docs/current/api/org/apache/hadoop/mapreduce/Job.html>`_ 代表一个 MapReduce 作业的配置。
 
 Job 是用户向 Hadoop 框架描述一个 MapReduce 作业如何执行的主要接口。框架会按照 Job 的描述执行作业, 然而:
 
-* 一些配置参数可能被管理员标记成了 final (参见 `Final 参数 <http://hadoop.apache.org/docs/stable/api/org/apache/hadoop/conf/Configuration.html#FinalParams>`_ )，因此它们不能被修改。
-* 虽然有些作业参数可以直接进行设置 (比如 `Job.setNumReduceTasks(int) <http://hadoop.apache.org/docs/stable/api/org/apache/hadoop/mapreduce/Job.html>`_ ), 但是另外一些微妙地影响着框架和/或作业配置的其余部分的参数设置起来就比较复杂(比如 `Configuration.set(JobContext.NUM_MAPS, int) <http://hadoop.apache.org/docs/current/api/org/apache/hadoop/conf/Configuration.html>`_)。
+* 一些配置参数可能被管理员标记成了 final (参见 `Final 参数 <http://hadoop.apache.org/docs/current/api/org/apache/hadoop/conf/Configuration.html#FinalParams>`_ )，因此它们不能被修改。
+* 虽然有些作业参数可以直接进行设置 (比如 `Job.setNumReduceTasks(int) <http://hadoop.apache.org/docs/current/api/org/apache/hadoop/mapreduce/Job.html>`_ ), 但是另外一些微妙地影响着框架和/或作业配置的其余部分的参数设置起来就比较复杂(比如 `Configuration.set(JobContext.NUM_MAPS, int) <http://hadoop.apache.org/docs/current/api/org/apache/hadoop/conf/Configuration.html>`_)。
 
-作业通常用于指定 Mapper、组合器(如果有的话)，Partitioner、Reducer、InputFormat 以及 OutputFormat 的实现。`FileInputFormat <http://hadoop.apache.org/docs/stable/api/org/apache/hadoop/mapreduce/lib/input/FileInputFormat.html>`_ 表示一组输入文件 (`FileInputFormat.setInputPaths(Job, Path…) <http://hadoop.apache.org/docs/stable/api/org/apache/hadoop/mapreduce/lib/input/FileInputFormat.html>`_ / `FileInputFormat.addInputPath(Job, Path) <http://hadoop.apache.org/docs/stable/api/org/apache/hadoop/mapreduce/lib/input/FileInputFormat.html>`_ ) 和 (`FileInputFormat.setInputPaths(Job, String…) <http://hadoop.apache.org/docs/stable/api/org/apache/hadoop/mapreduce/lib/input/FileInputFormat.html>`_ ) / `FileInputFormat.addInputPaths(Job, String) <http://hadoop.apache.org/docs/stable/api/org/apache/hadoop/mapreduce/lib/input/FileInputFormat.html>`_) 以及输出文件应该写入到哪儿 (`FileOutputFormat.setOutputPath(Path) <http://hadoop.apache.org/docs/stable/api/org/apache/hadoop/mapreduce/lib/input/FileOutputFormat.html>`_ )。
+作业通常用于指定 Mapper、组合器(如果有的话)，Partitioner、Reducer、InputFormat 以及 OutputFormat 的实现。`FileInputFormat <http://hadoop.apache.org/docs/current/api/org/apache/hadoop/mapreduce/lib/input/FileInputFormat.html>`_ 表示一组输入文件 (`FileInputFormat.setInputPaths(Job, Path…) <http://hadoop.apache.org/docs/current/api/org/apache/hadoop/mapreduce/lib/input/FileInputFormat.html>`_ / `FileInputFormat.addInputPath(Job, Path) <http://hadoop.apache.org/docs/current/api/org/apache/hadoop/mapreduce/lib/input/FileInputFormat.html>`_ ) 和 (`FileInputFormat.setInputPaths(Job, String…) <http://hadoop.apache.org/docs/current/api/org/apache/hadoop/mapreduce/lib/input/FileInputFormat.html>`_ ) / `FileInputFormat.addInputPaths(Job, String) <http://hadoop.apache.org/docs/current/api/org/apache/hadoop/mapreduce/lib/input/FileInputFormat.html>`_) 以及输出文件应该写入到哪儿 (`FileOutputFormat.setOutputPath(Path) <http://hadoop.apache.org/docs/current/api/org/apache/hadoop/mapreduce/lib/input/FileOutputFormat.html>`_ )。
 
 可以选择使用Job来指定作业的其他高级方面，例如要使用的比较器，要放入 DistributedCache 的文件，是否(以及如何)压缩中间和/或作业输出，作业任务是否可以以推测的方式执行(`setMapSpeculativeExecution(boolean) <http://hadoop.apache.org/docs/current/api/org/apache/hadoop/mapreduce/Job.html>`_ / `setReduceSpeculativeExecution(boolean) <http://hadoop.apache.org/docs/current/api/org/apache/hadoop/mapreduce/Job.html>`_)，每个任务的最大尝试次数 (`setMaxMapAttempts(int) <http://hadoop.apache.org/docs/current/api/org/apache/hadoop/mapreduce/Job.html>`_ / `setMaxReduceAttempts(int) <http://hadoop.apache.org/docs/current/api/org/apache/hadoop/mapreduce/Job.html>`_) 等。
 
-当然, 用户可以使用 `Configuration.set(String, String) <http://hadoop.apache.org/docs/stable/api/org/apache/hadoop/conf/Configuration.html>`_ / `Configuration.get(String) <http://hadoop.apache.org/docs/stable/api/org/apache/hadoop/conf/Configuration.html>`_ 来设置/获取应用程序所需的任意参数。但是对于大规模只读数据，请使用 ``DistributedCache``。
+当然, 用户可以使用 `Configuration.set(String, String) <http://hadoop.apache.org/docs/current/api/org/apache/hadoop/conf/Configuration.html>`_ / `Configuration.get(String) <http://hadoop.apache.org/docs/current/api/org/apache/hadoop/conf/Configuration.html>`_ 来设置/获取应用程序所需的任意参数。但是对于大规模只读数据，请使用 ``DistributedCache``。
 
 
 .. _task_execution_and_environment:
@@ -641,14 +641,14 @@ mapreduce.task.output.dir             String                        任务临时
 分发类库
 --------------------------------
 
-`DistributedCache <http://hadoop.apache.org/docs/stable/hadoop-mapreduce-client/hadoop-mapreduce-client-core/MapReduceTutorial.html#DistributedCache>`_ 还可以用来分发 map 和/或 reduce 任务中要用的 jar 包以及本地类库。child-jvm 总是将其当前工作目录添加到 java.library.path 和 LD_LIBRARY_PATH 中。因此缓存的类库可以通过 `System.loadLibrary <http://docs.oracle.com/javase/7/docs/api/java/lang/System.html>`_ 或 `System.load <http://docs.oracle.com/javase/7/docs/api/java/lang/System.html>`_ 加载。更多关于如何通过分布式缓存加载共享类库的细节参见 `Native Libraries <http://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-common/NativeLibraries.html#Native_Shared_Libraries>`_ 文档。
+`DistributedCache <http://hadoop.apache.org/docs/current/hadoop-mapreduce-client/hadoop-mapreduce-client-core/MapReduceTutorial.html#DistributedCache>`_ 还可以用来分发 map 和/或 reduce 任务中要用的 jar 包以及本地类库。child-jvm 总是将其当前工作目录添加到 java.library.path 和 LD_LIBRARY_PATH 中。因此缓存的类库可以通过 `System.loadLibrary <http://docs.oracle.com/javase/7/docs/api/java/lang/System.html>`_ 或 `System.load <http://docs.oracle.com/javase/7/docs/api/java/lang/System.html>`_ 加载。更多关于如何通过分布式缓存加载共享类库的细节参见 `Native Libraries <http://hadoop.apache.org/docs/current/hadoop-project-dist/hadoop-common/NativeLibraries.html#Native_Shared_Libraries>`_ 文档。
 
 .. _job_submission_and_monitoring:
 
 作业提交与监控
 ================================
 
-`Job <http://hadoop.apache.org/docs/stable/api/org/apache/hadoop/mapreduce/Job.html>`_ 是用户作业和 ResourceManager 进行交互的主要接口。
+`Job <http://hadoop.apache.org/docs/current/api/org/apache/hadoop/mapreduce/Job.html>`_ 是用户作业和 ResourceManager 进行交互的主要接口。
 
 Job 提供了用于提交作业、跟踪作业进度、访问组件任务的报告和日志以及获取 MapReduce 集群状态信息等工具。
 
@@ -686,8 +686,8 @@ Job 提供了用于提交作业、跟踪作业进度、访问组件任务的报�
 
 然而，这也意味着确保作业完成(成功/失败)的责任就直接落在了客户身上。在这种情况下，可用的作业控制选项有:
 
-* `Job.submit() <http://hadoop.apache.org/docs/stable/api/org/apache/hadoop/mapreduce/Job.html>`_ : 提交作业到集群并立即返回。
-* `Job.waitForCompletion(boolean) <http://hadoop.apache.org/docs/stable/api/org/apache/hadoop/mapreduce/Job.html>`_ : 提交作业到集群并等待作业完成。
+* `Job.submit() <http://hadoop.apache.org/docs/current/api/org/apache/hadoop/mapreduce/Job.html>`_ : 提交作业到集群并立即返回。
+* `Job.waitForCompletion(boolean) <http://hadoop.apache.org/docs/current/api/org/apache/hadoop/mapreduce/Job.html>`_ : 提交作业到集群并等待作业完成。
 
 
 .. _job_input:
@@ -695,7 +695,7 @@ Job 提供了用于提交作业、跟踪作业进度、访问组件任务的报�
 作业输入
 ================================
 
-`InputFormat <http://hadoop.apache.org/docs/stable/api/org/apache/hadoop/mapreduce/InputFormat.html>`_ 描述了一个 MapReduce 作业的输入规范。
+`InputFormat <http://hadoop.apache.org/docs/current/api/org/apache/hadoop/mapreduce/InputFormat.html>`_ 描述了一个 MapReduce 作业的输入规范。
 
 MapReduce 框架依赖作业的 InputFormat 来:
 
@@ -703,11 +703,11 @@ MapReduce 框架依赖作业的 InputFormat 来:
 #. 把输入文件分割成多个逻辑的 InputSplit 实例，然后将每个实例分配给一个单独的 Mapper。
 #. 提供 RecordReader 的实现，用于从逻辑 InputSplit 中读取输入记录以供 Mapper 处理。
 
-基于文件的 InputFormat 实现(通常是 `FileInputFormat <http://hadoop.apache.org/docs/stable/api/org/apache/hadoop/mapreduce/lib/input/FileInputFormat.html>`_ 的子类) 的默认行为是是根据输入文件的总字节大小将输入分割成逻辑 InputSplit 实例。但是，输入文件的文件系统块大小被视为输入分割的上限。分割大小的下限可以通过 mapreduce.input.fileinputformat.split.minsize 参数来设置。
+基于文件的 InputFormat 实现(通常是 `FileInputFormat <http://hadoop.apache.org/docs/current/api/org/apache/hadoop/mapreduce/lib/input/FileInputFormat.html>`_ 的子类) 的默认行为是是根据输入文件的总字节大小将输入分割成逻辑 InputSplit 实例。但是，输入文件的文件系统块大小被视为输入分割的上限。分割大小的下限可以通过 mapreduce.input.fileinputformat.split.minsize 参数来设置。
 
 按照输入文件大小进行逻辑分割对于很多应用程序来说显然是不够的，因为我们必须要考虑记录边界。在这种情况下，应用程序需要实现一个 RecordReader 来负责处理记录边界，以及为单个任务提供逻辑 InputSplit 的一个面向记录的视图。
 
-`TextInputFormat <http://hadoop.apache.org/docs/stable/api/org/apache/hadoop/mapreduce/lib/input/TextInputFormat.html>`_ 是默认的 InputFormat。
+`TextInputFormat <http://hadoop.apache.org/docs/current/api/org/apache/hadoop/mapreduce/lib/input/TextInputFormat.html>`_ 是默认的 InputFormat。
 
 如果一个给定作业的 Inputformat 是 TextInputFormat，则框架会检测带有 .gz 后缀的输入文件并使用合适的 CompressionCodec 自动解压缩这些文件。但是需要注意的是，带有上述扩展名的压缩文件不会被切分，并且每个压缩文件会被一个 mapper 作为一个整体来处理。
 
@@ -717,11 +717,11 @@ MapReduce 框架依赖作业的 InputFormat 来:
 InputSplit
 --------------------------------
 
-`InputSplit <http://hadoop.apache.org/docs/stable/api/org/apache/hadoop/mapreduce/InputSplit.html>`_ 表示单个 Mapper 要处理的数据。
+`InputSplit <http://hadoop.apache.org/docs/current/api/org/apache/hadoop/mapreduce/InputSplit.html>`_ 表示单个 Mapper 要处理的数据。
 
 通常 InputSplit 提供一个面向字节的输入视图，RecordReader 负责处理并转换成一个面向记录的视图。
 
-`FileSplit <http://hadoop.apache.org/docs/stable/api/org/apache/hadoop/mapreduce/lib/input/FileSplit.html>`_ 是默认的 InputSplit。它将 ``mapreduce.map.input.file`` 参数设置为逻辑分割的输入文件的路径。
+`FileSplit <http://hadoop.apache.org/docs/current/api/org/apache/hadoop/mapreduce/lib/input/FileSplit.html>`_ 是默认的 InputSplit。它将 ``mapreduce.map.input.file`` 参数设置为逻辑分割的输入文件的路径。
 
 
 .. _record_reader:
@@ -729,7 +729,7 @@ InputSplit
 RecordReader
 --------------------------------
 
-`RecordReader <http://hadoop.apache.org/docs/stable/api/org/apache/hadoop/mapreduce/RecordReader.html>`_ 从 InputSlit 读取 <key, value> 对。
+`RecordReader <http://hadoop.apache.org/docs/current/api/org/apache/hadoop/mapreduce/RecordReader.html>`_ 从 InputSlit 读取 <key, value> 对。
 
 通常 RecordReader 会把 InputSplit 提供的面向字节的输入视图转换成一个面向记录的视图并呈现给 Mapper 的实现进行处理。 因此 RecordReader 负责处理记录边界并将使用键和值表示任务。
 
@@ -738,7 +738,7 @@ RecordReader
 作业输出
 ================================
 
-`OutputFormat <http://hadoop.apache.org/docs/stable/api/org/apache/hadoop/mapreduce/OutputFormat.html>`_ 描述了一个 MapReduce 作业的输出规范。
+`OutputFormat <http://hadoop.apache.org/docs/current/api/org/apache/hadoop/mapreduce/OutputFormat.html>`_ 描述了一个 MapReduce 作业的输出规范。
 
 MapReduce 框架依赖作业的 OutputFormat 来:
 
@@ -753,7 +753,7 @@ TextOutputFormat 是默认的 OutputFormat。
 OutputCommitter
 --------------------------------
 
-`OutputCommitter <http://hadoop.apache.org/docs/stable/api/org/apache/hadoop/mapreduce/OutputCommitter.html>`_ 描述了一个 MapReduce 作业提交任务输出。
+`OutputCommitter <http://hadoop.apache.org/docs/current/api/org/apache/hadoop/mapreduce/OutputCommitter.html>`_ 描述了一个 MapReduce 作业提交任务输出。
 
 MapReduce 框架依赖作业的 OutputCommitter 来:
 
@@ -778,9 +778,9 @@ FileOutputCommitter 是默认的 OutputCommitter。作业设置/清理任务占�
 
 为了避免这些问题, 当 OutputCommitter 是 FileOutputCommitter 时, MapReduce 框架在文件系统上为每个任务尝试维护了一个特殊的 ``${mapreduce.output.fileoutputformat.outputdir}/_temporary/_${taskid}`` 子目录来存储任务尝试的输出，该目录可以通过 ``${mapreduce.task.output.dir}`` 访问。在任务尝试成功执行完成时, ``${mapreduce.output.fileoutputformat.outputdir}/_temporary/_${taskid}`` 中的文件(仅)会被移动到 ``${mapreduce.output.fileoutputformat.outputdir}`` 目录下。当然，框架会丢弃那些失败任务尝试的子目录。这个过程对于应用程序来说是完全透明的。
 
-应用程序编写者可以在任务执行期间通过 `FileOutputFormat.getWorkOutputPath(Context) <http://hadoop.apache.org/docs/stable/api/org/apache/hadoop/mapreduce/lib/output/FileOutputFormat.html>`_ 在 ``${mapreduce.task.output.dir}`` 中创建任意需要的副文件来利用该功能，并且同样地对于成功的尝试框架会移动这些文件，因此不需要为每个任务尝试选取唯一路径。
+应用程序编写者可以在任务执行期间通过 `FileOutputFormat.getWorkOutputPath(Context) <http://hadoop.apache.org/docs/current/api/org/apache/hadoop/mapreduce/lib/output/FileOutputFormat.html>`_ 在 ``${mapreduce.task.output.dir}`` 中创建任意需要的副文件来利用该功能，并且同样地对于成功的尝试框架会移动这些文件，因此不需要为每个任务尝试选取唯一路径。
 
-.. note:: 在特定任务尝试执行期间，``${mapreduce.task.output.dir}`` 的值实际上是 ``${mapreduce.output.fileoutputformat.outputdir}/_temporary/_{$taskid}``, 并且这个值是由 MapReduce 框架设置的。因此, 只需要从 MapReduce 任务的 `FileOutputFormat.getWorkOutputPath(Context) <http://hadoop.apache.org/docs/stable/api/org/apache/hadoop/mapreduce/lib/output/FileOutputFormat.html>`_ 返回路径中创建任意副文件即可充分利用该功能。
+.. note:: 在特定任务尝试执行期间，``${mapreduce.task.output.dir}`` 的值实际上是 ``${mapreduce.output.fileoutputformat.outputdir}/_temporary/_{$taskid}``, 并且这个值是由 MapReduce 框架设置的。因此, 只需要从 MapReduce 任务的 `FileOutputFormat.getWorkOutputPath(Context) <http://hadoop.apache.org/docs/current/api/org/apache/hadoop/mapreduce/lib/output/FileOutputFormat.html>`_ 返回路径中创建任意副文件即可充分利用该功能。
 
 整个讨论适用于 reducer=NONE (即 0 个 reduce) 的作业，因为在这种情况下，map 的输出直接写到 HDFS。
 
@@ -790,7 +790,7 @@ FileOutputCommitter 是默认的 OutputCommitter。作业设置/清理任务占�
 RecordWriter
 --------------------------------
 
-`RecordWriter <http://hadoop.apache.org/docs/stable/api/org/apache/hadoop/mapreduce/RecordWriter.html>`_ 将生成的 <key, value> 对写到输出文件中。
+`RecordWriter <http://hadoop.apache.org/docs/current/api/org/apache/hadoop/mapreduce/RecordWriter.html>`_ 将生成的 <key, value> 对写到输出文件中。
 
 RecordWriter 的实现把作业的输出结果写到文件系统。
 
@@ -806,7 +806,7 @@ RecordWriter 的实现把作业的输出结果写到文件系统。
 
 用户将作业提交到队列。队列，作为作业集合，允许系统提供特定的功能。 例如，队列使用 ACL 来控制哪些用户可以向他们提交作业。 预计队列将主要由 Hadoop 调度程序使用。
 
-Hadoop 配置了一个名为 'default' 的强制队列。队列名称在 Hadoop 站点配置的 ``mapreduce.job.queuename`` 属性中定义。一些作业调度程序，如 `Capacity Scheduler <http://hadoop.apache.org/docs/stable/hadoop-yarn/hadoop-yarn-site/CapacityScheduler.html>`_ 支持多个队列。
+Hadoop 配置了一个名为 'default' 的强制队列。队列名称在 Hadoop 站点配置的 ``mapreduce.job.queuename`` 属性中定义。一些作业调度程序，如 `Capacity Scheduler <http://hadoop.apache.org/docs/current/hadoop-yarn/hadoop-yarn-site/CapacityScheduler.html>`_ 支持多个队列。
 
 作业通过 ``mapreduce.job.queuename`` 属性或通过 ``Configuration.set(MRJobConfig.QUEUE_NAME，String)`` API 定义其需要提交到的队列。设置队列名是可选的。如果提交的作业没有设置相应的队列名称，则其会提交到 'default' 队列。
 
@@ -818,7 +818,7 @@ Counters
 
 Counters 表示由 MapReduce 框架或者应用程序定义的全局计数器。每个计数器可以是任意的枚举类型。同一特定枚举类型的多个计数器可以划分到类型为 Counters.Group 的分组里面。
 
-应用程序可以定义任意数量的计数器(Enum类型)并且可以在 map 和/或 reduce 方法中通过 `Counters.incrCounter(Enum, long) <http://hadoop.apache.org/docs/stable/api/org/apache/hadoop/mapred/Counters.html>`_ 或 ``Counters.incrCounter(String, String, long)`` 方法更新他们。接着框架会对这些计数器进行全局聚合。
+应用程序可以定义任意数量的计数器(Enum类型)并且可以在 map 和/或 reduce 方法中通过 `Counters.incrCounter(Enum, long) <http://hadoop.apache.org/docs/current/api/org/apache/hadoop/mapred/Counters.html>`_ 或 ``Counters.incrCounter(String, String, long)`` 方法更新他们。接着框架会对这些计数器进行全局聚合。
 
 
 .. _distributed_cache:
@@ -881,13 +881,13 @@ MapReduce 框架提供了一个工具来运行用户提供的用于调试的脚�
 如何分发脚本文件
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-用户需要使用 `DistributedCache <http://hadoop.apache.org/docs/stable/hadoop-mapreduce-client/hadoop-mapreduce-client-core/MapReduceTutorial.html#DistributedCache>`_ 来分发和链接脚本文件。
+用户需要使用 `DistributedCache <http://hadoop.apache.org/docs/current/hadoop-mapreduce-client/hadoop-mapreduce-client-core/MapReduceTutorial.html#DistributedCache>`_ 来分发和链接脚本文件。
 
 
 如何提交脚本
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-提交调试脚本的一个快速方法是分别为需要调试的 map 任务和 reduce 任务设置 ``mapreduce.map.debug.script`` 和 ``mapreduce.reduce.debug.script`` 属性值。这些属性也可以通过使用 `Configuration.set(MRJobConfig.MAP_DEBUG_SCRIPT, String) <http://hadoop.apache.org/docs/stable/api/org/apache/hadoop/conf/Configuration.html>`_ 和 `Configuration.set(MRJobConfig.REDUCE_DEBUG_SCRIPT, String) <http://hadoop.apache.org/docs/stable/api/org/apache/hadoop/conf/Configuration.html>`_ API 来设置。在 streaming 模式中，可以使用命令行选项 -mapdebug 和 -reducedegug 来提交调试脚本, 分别用于调试 map 任务和 reduce 任务。
+提交调试脚本的一个快速方法是分别为需要调试的 map 任务和 reduce 任务设置 ``mapreduce.map.debug.script`` 和 ``mapreduce.reduce.debug.script`` 属性值。这些属性也可以通过使用 `Configuration.set(MRJobConfig.MAP_DEBUG_SCRIPT, String) <http://hadoop.apache.org/docs/current/api/org/apache/hadoop/conf/Configuration.html>`_ 和 `Configuration.set(MRJobConfig.REDUCE_DEBUG_SCRIPT, String) <http://hadoop.apache.org/docs/current/api/org/apache/hadoop/conf/Configuration.html>`_ API 来设置。在 streaming 模式中，可以使用命令行选项 -mapdebug 和 -reducedegug 来提交调试脚本, 分别用于调试 map 任务和 reduce 任务。
 
 脚本的参数是任务的 stdout, stderr, syslog 以及 jobconf 文件。在 MapReduce 任务失败的节点上运行的调试命令是:
 
@@ -912,9 +912,9 @@ MapReduce 框架提供了一个工具来运行用户提供的用于调试的脚�
 数据压缩
 --------------------------------
 
-Hadoop MapReduce 框架为应用程序编写器提供了用于指定 map 中间输出和作业输出(如 reduce 输出) 压缩算法的工具。它还捆绑了 `zlib <http://www.zlib.net/>`_ 压缩算法的 `CompressionCodec <http://hadoop.apache.org/docs/stable/api/org/apache/hadoop/io/compress/CompressionCodec.html>`_ 实现。同时也支持 `gzip <http://www.gzip.org/>`_ , `bzip2 <http://www.bzip.org/>`_ , `snappy <http://code.google.com/p/snappy/>`_ 以及 `lz4 <http://code.google.com/p/lz4/>`_ 文件格式。
+Hadoop MapReduce 框架为应用程序编写器提供了用于指定 map 中间输出和作业输出(如 reduce 输出) 压缩算法的工具。它还捆绑了 `zlib <http://www.zlib.net/>`_ 压缩算法的 `CompressionCodec <http://hadoop.apache.org/docs/current/api/org/apache/hadoop/io/compress/CompressionCodec.html>`_ 实现。同时也支持 `gzip <http://www.gzip.org/>`_ , `bzip2 <http://www.bzip.org/>`_ , `snappy <http://code.google.com/p/snappy/>`_ 以及 `lz4 <http://code.google.com/p/lz4/>`_ 文件格式。
 
-考虑到性能(zlib)和 Java 类库的不可用性, Hadoop 也为上述压缩编解码器提供了本地实现。有关它们的用法和可用性的更多细节参见`这里 <http://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-common/NativeLibraries.html>`_ 。
+考虑到性能(zlib)和 Java 类库的不可用性, Hadoop 也为上述压缩编解码器提供了本地实现。有关它们的用法和可用性的更多细节参见`这里 <http://hadoop.apache.org/docs/current/hadoop-project-dist/hadoop-common/NativeLibraries.html>`_ 。
 
 
 中间输出
@@ -926,26 +926,26 @@ Hadoop MapReduce 框架为应用程序编写器提供了用于指定 map 中间�
 作业输出
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-应用程序可以通过 `FileOutputFormat.setCompressOutput(Job, boolean) <http://hadoop.apache.org/docs/stable/api/org/apache/hadoop/mapreduce/lib/output/FileOutputFormat.html>`_  API 控制作业输出是否需要进行压缩并且通过 ``FileOutputFormat.setOutputCompressorClass(Job, Class)`` API 指定需要使用的 CompressionCodec。
+应用程序可以通过 `FileOutputFormat.setCompressOutput(Job, boolean) <http://hadoop.apache.org/docs/current/api/org/apache/hadoop/mapreduce/lib/output/FileOutputFormat.html>`_  API 控制作业输出是否需要进行压缩并且通过 ``FileOutputFormat.setOutputCompressorClass(Job, Class)`` API 指定需要使用的 CompressionCodec。
 
-如果作业输出要存储在 `SequenceFileOutputFormat <http://hadoop.apache.org/docs/stable/api/org/apache/hadoop/mapreduce/lib/output/SequenceFileOutputFormat.html>`_ 中, 需要通过 ``SequenceFileOutputFormat.setOutputCompressionType(Job, SequenceFile.CompressionType)`` API 指定需要的 ``SequenceFile.CompressionType`` (例如 RECORD / BLOCK， 默认值是 RECORD)。
+如果作业输出要存储在 `SequenceFileOutputFormat <http://hadoop.apache.org/docs/current/api/org/apache/hadoop/mapreduce/lib/output/SequenceFileOutputFormat.html>`_ 中, 需要通过 ``SequenceFileOutputFormat.setOutputCompressionType(Job, SequenceFile.CompressionType)`` API 指定需要的 ``SequenceFile.CompressionType`` (例如 RECORD / BLOCK， 默认值是 RECORD)。
 
 .. _skipping_bad_records:
 
 跳过脏数据
 --------------------------------
 
-Hadoop 提供了一个选项，可以在处理 map 端输入时跳过某些脏数据。 应用程序可以通过 `SkipBadRecords <http://hadoop.apache.org/docs/stable/api/org/apache/hadoop/mapred/SkipBadRecords.html>`_ 类来控制该功能。
+Hadoop 提供了一个选项，可以在处理 map 端输入时跳过某些脏数据。 应用程序可以通过 `SkipBadRecords <http://hadoop.apache.org/docs/current/api/org/apache/hadoop/mapred/SkipBadRecords.html>`_ 类来控制该功能。
 
 当 map 任务在某些输入上确定性地崩溃时，可以使用该功能。这通常是由于 map 函数中的 bug 而发生的。通常用户不得不修复这些 bug。但是，有时候这是不可能的。bug 可能存在于第三方库中，例如源代码不可用。在这种情况下，即使经过很多次尝试，任务也不会成功地完成，并且作业会失败。使用此功能后，只有脏记录周围一小部分数据会丢失，对于某些应用程序(例如对超大型数据执行统计分析的应用程序)来说是可以接受的。
 
-默认情况下，该功能被禁用。要想启用它，请参阅 `SkipBadRecords.setMapperMaxSkipRecords(Configuration, long) <http://hadoop.apache.org/docs/stable/api/org/apache/hadoop/mapred/SkipBadRecords.html>`_ 和 `SkipBadRecords.setReducerMaxSkipGroups(Configuration, long) <http://hadoop.apache.org/docs/stable/api/org/apache/hadoop/mapred/SkipBadRecords.html>`_ 。
+默认情况下，该功能被禁用。要想启用它，请参阅 `SkipBadRecords.setMapperMaxSkipRecords(Configuration, long) <http://hadoop.apache.org/docs/current/api/org/apache/hadoop/mapred/SkipBadRecords.html>`_ 和 `SkipBadRecords.setReducerMaxSkipGroups(Configuration, long) <http://hadoop.apache.org/docs/current/api/org/apache/hadoop/mapred/SkipBadRecords.html>`_ 。
 
-启用此功能后，框架会在一定数量的 map 失败后进入"跳过模式"。更多细节，请参阅 `SkipBadRecords.setAttemptsToStartSkipping(Configuration，int) <http://hadoop.apache.org/docs/stable/api/org/apache/hadoop/mapred/SkipBadRecords.html>`_ 。在"跳过模式"中，map 任务维护着正在处理的记录范围。为此，框架依赖于已处理记录计数器。参见 `SkipBadRecords.COUNTER_MAP_PROCESSED_RECORDS <http://hadoop.apache.org/docs/stable/api/org/apache/hadoop/mapred/SkipBadRecords.html>`_ 和 `SkipBadRecords.COUNTER_REDUCE_PROCESSED_GROUPS <http://hadoop.apache.org/docs/stable/api/org/apache/hadoop/mapred/SkipBadRecords.html>`_ 。该计数器使框架能够知道已经成功处理了多少记录以及什么记录范围会导致任务崩溃。在进一步的尝试中，这个范围的记录被跳过。
+启用此功能后，框架会在一定数量的 map 失败后进入"跳过模式"。更多细节，请参阅 `SkipBadRecords.setAttemptsToStartSkipping(Configuration，int) <http://hadoop.apache.org/docs/current/api/org/apache/hadoop/mapred/SkipBadRecords.html>`_ 。在"跳过模式"中，map 任务维护着正在处理的记录范围。为此，框架依赖于已处理记录计数器。参见 `SkipBadRecords.COUNTER_MAP_PROCESSED_RECORDS <http://hadoop.apache.org/docs/current/api/org/apache/hadoop/mapred/SkipBadRecords.html>`_ 和 `SkipBadRecords.COUNTER_REDUCE_PROCESSED_GROUPS <http://hadoop.apache.org/docs/current/api/org/apache/hadoop/mapred/SkipBadRecords.html>`_ 。该计数器使框架能够知道已经成功处理了多少记录以及什么记录范围会导致任务崩溃。在进一步的尝试中，这个范围的记录被跳过。
 
-跳过的记录数取决于应用程序增加处理记录计数器的频率。建议在处理完每条记录后，再增加该计数器。在一些通常需要批量处理的应用程序中，可能没办法这么做。在这种情况下，框架可能会跳过脏数据周围的其他数据记录。用户可以通过 `SkipBadRecords.setMapperMaxSkipRecords(Configuration, long) <http://hadoop.apache.org/docs/stable/api/org/apache/hadoop/mapred/SkipBadRecords.html>`_ 和 `SkipBadRecords.setReducerMaxSkipGroups(Configuration, long) <http://hadoop.apache.org/docs/stable/api/org/apache/hadoop/mapred/SkipBadRecords.html>`_ 来控制跳过的记录数。该框架试图使用类似二分查找的方法来缩小跳过记录的范围。跳过的范围被分成两半，只有一半能够被执行。在后续的失败中，框架会查出哪一半包含脏记录。一个任务将被重新执行，直到满足可接受的跳过值或所有任务尝试都用尽。要增加任务尝试次数，可以使用 `Job.setMaxMapAttempts(int) <http://hadoop.apache.org/docs/stable/api/org/apache/hadoop/mapreduce/Job.html>`_ 和 `Job.setMaxReduceAttempts(int) <http://hadoop.apache.org/docs/stable/api/org/apache/hadoop/mapreduce/Job.html>`_ 。
+跳过的记录数取决于应用程序增加处理记录计数器的频率。建议在处理完每条记录后，再增加该计数器。在一些通常需要批量处理的应用程序中，可能没办法这么做。在这种情况下，框架可能会跳过脏数据周围的其他数据记录。用户可以通过 `SkipBadRecords.setMapperMaxSkipRecords(Configuration, long) <http://hadoop.apache.org/docs/current/api/org/apache/hadoop/mapred/SkipBadRecords.html>`_ 和 `SkipBadRecords.setReducerMaxSkipGroups(Configuration, long) <http://hadoop.apache.org/docs/current/api/org/apache/hadoop/mapred/SkipBadRecords.html>`_ 来控制跳过的记录数。该框架试图使用类似二分查找的方法来缩小跳过记录的范围。跳过的范围被分成两半，只有一半能够被执行。在后续的失败中，框架会查出哪一半包含脏记录。一个任务将被重新执行，直到满足可接受的跳过值或所有任务尝试都用尽。要增加任务尝试次数，可以使用 `Job.setMaxMapAttempts(int) <http://hadoop.apache.org/docs/current/api/org/apache/hadoop/mapreduce/Job.html>`_ 和 `Job.setMaxReduceAttempts(int) <http://hadoop.apache.org/docs/current/api/org/apache/hadoop/mapreduce/Job.html>`_ 。
 
-跳过的记录会以序列文件格式写入 HDFS，以便后面进行分析。文件存储路径可以通过 `SkipBadRecords.setSkipOutputPath(JobConf，Path) <http://hadoop.apache.org/docs/stable/api/org/apache/hadoop/mapred/SkipBadRecords.html>`_ 进行更改。
+跳过的记录会以序列文件格式写入 HDFS，以便后面进行分析。文件存储路径可以通过 `SkipBadRecords.setSkipOutputPath(JobConf，Path) <http://hadoop.apache.org/docs/current/api/org/apache/hadoop/mapred/SkipBadRecords.html>`_ 进行更改。
 
 .. _example_wordcount_v2:
 
@@ -954,7 +954,7 @@ Hadoop 提供了一个选项，可以在处理 map 端输入时跳过某些脏�
 
 这是一个更完整的 WordCount 示例程序，它使用了我们迄今为止已经讨论过的 MapReduce 框架提供的许多功能。
 
-运行这个示例程序需要启动并运行 HDFS，特别是 DistributedCache 相关的功能。因此它只能运行在 `伪分布式 <http://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-common/SingleCluster.html>`_ 或 `完全分布式 <http://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-common/ClusterSetup.html>`_ Hadoop 上。
+运行这个示例程序需要启动并运行 HDFS，特别是 DistributedCache 相关的功能。因此它只能运行在 `伪分布式 <http://hadoop.apache.org/docs/current/hadoop-project-dist/hadoop-common/SingleCluster.html>`_ 或 `完全分布式 <http://hadoop.apache.org/docs/current/hadoop-project-dist/hadoop-common/ClusterSetup.html>`_ Hadoop 上。
 
 
 .. _example_wordcount_v2_source_code:
