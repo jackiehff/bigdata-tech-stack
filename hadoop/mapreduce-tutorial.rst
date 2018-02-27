@@ -78,15 +78,15 @@ Hadoop MapReduce 是一个软件框架，用于很容易地编写出以可靠的
 
 MapReduce 作业通常将输入数据集切分成若干独立的块，这些数据块由 map 任务以完全并行的方式进行处理。MapReduce 框架对 map 的输出先进行排序，然后将排序结果输入到 reduce 任务。通常，作业的输入和输出都存储在文件系统中。MapReduce 框架负责调度任务，监控它们并重新执行失败的任务。
 
-计算节点和存储节点通常都是相同的, 也就是说, MapReduce 框架和 Hadoop 分布式文件系统(参见 `HDFS架构指南 <http://hadoop.apache.org/docs/current/hadoop-project-dist/hadoop-hdfs/HdfsDesign.html>`_)是在同一组节点上运行的。该配置允许框架在已经存在数据的节点上有效地调度任务, 从而在整个集群中产生非常高的聚合带宽。
+计算节点和存储节点通常都是相同的，也就是说，MapReduce 框架和 Hadoop 分布式文件系统(参见 `HDFS架构指南 <http://hadoop.apache.org/docs/current/hadoop-project-dist/hadoop-hdfs/HdfsDesign.html>`_)是在同一组节点上运行的。该配置允许框架在已经存在数据的节点上有效地调度任务，从而在整个集群中产生非常高的聚合带宽。
 
 MapReduce 框架由单个充当 master 节点的 ResourceManager，每个集群节点对应一个充当 worker 节点的 NodeManager 以及每个应用程序对应的一个 MRAppMaster 组成(参见 `YARN 架构指南 <http://hadoop.apache.org/docs/current/hadoop-yarn/hadoop-yarn-site/YARN.html>`_ )。
 
 最低限度，应用程序会通过实现适当的接口和/或抽象类来指定输入/输出位置以及提供 map 和 reduce函数。这些和其他作业参数构成了作业配置。
 
-Hadoop作业客户端将作业(jar或可执行文件等)和配置提交给 ResourceManager，然后 ResourceManager 负责将软件/配置分发到 worker 节点，调度任务并监控它们，并向作业客户端提供状态和诊断信息。
+Hadoop 作业客户端将作业(jar或可执行文件等)和配置提交给 ResourceManager，然后 ResourceManager 负责将软件/配置分发到 worker 节点，调度任务并监控它们，并向作业客户端提供状态和诊断信息。
 
-尽管 Hadoop 框架是用 Java™ 实现的, 但是 MapReduce 应用程序不一定要用 Java 编写。
+尽管 Hadoop 框架是用 Java™ 实现的，但是 MapReduce 应用程序不一定要用 Java 编写。
 
 * `Hadoop Streaming <http://hadoop.apache.org/docs/current/api/org/apache/hadoop/streaming/package-summary.html>`_ 是一个实用程序，它允许用户使用任何可执行文件(比如 shell 实用程序) 作为 mapper 和/或 reducer 来创建和运行作业。
 * `Hadoop Pipes <http://hadoop.apache.org/docs/current/api/org/apache/hadoop/mapred/pipes/package-summary.html>`_ 是一个兼容 `SWIG <http://www.swig.org>`_ 的 C++ API，用于实现 MapReduce 应用程序(不是基于 JNI™)。
@@ -98,9 +98,9 @@ Hadoop作业客户端将作业(jar或可执行文件等)和配置提交给 Resou
 输入和输出
 ********************************
 
-MapReduce 框架专门处理键值对, 也就是说框架将作业的输入视作一组键值对并产生一组键值对作为作业的输出, 这两组键值对的类型可能不同。
+MapReduce 框架专门处理键值对，也就是说框架将作业的输入视作一组键值对并产生一组键值对作为作业的输出，这两组键值对的类型可能不同。
 
-key 和 value 类需要被框架序列化，因此需要实现 `Writable <http://hadoop.apache.org/docs/current/api/org/apache/hadoop/io/Writable.html>`_ 接口。另外, 为了便于框架进行排序, key 类必须实现 `WritableComparable <http://hadoop.apache.org/docs/current/api/org/apache/hadoop/io/WritableComparable.html>`_ 接口。
+key 和 value 类需要被框架序列化，因此需要实现 `Writable <http://hadoop.apache.org/docs/current/api/org/apache/hadoop/io/Writable.html>`_ 接口。另外，为了便于框架进行排序，key 类必须实现 `WritableComparable <http://hadoop.apache.org/docs/current/api/org/apache/hadoop/io/WritableComparable.html>`_ 接口。
 
 下面是一个 MapReduce 作业的输入和输出类型:
 
@@ -115,11 +115,11 @@ key 和 value 类需要被框架序列化，因此需要实现 `Writable <http:/
 示例: WordCount v1.0
 ********************************
 
-在深入学习 MapReduce 细节之前, 我们先通过一个 MapReduce 示例程序了解下他们是如何工作的。
+在深入学习 MapReduce 细节之前，我们先通过一个 MapReduce 示例程序了解下他们是如何工作的。
 
 WordCount 是一个简单的应用程序，它统计给定输入数据集中每个单词出现的次数。
 
-它可以运行于单机模式、伪分布式模式或完全分布式模式下安装的 Hadoop(`单节点集群搭建 <http://hadoop.apache.org/docs/current/hadoop-project-dist/hadoop-common/SingleCluster.html>`_)。
+它可以运行于单机模式、伪分布式模式或完全分布式模式下安装的 Hadoop (`单节点集群搭建 <http://hadoop.apache.org/docs/current/hadoop-project-dist/hadoop-common/SingleCluster.html>`_)。
 
 
 .. _example_wordcount_v1_source_code:
@@ -213,8 +213,8 @@ WordCount 是一个简单的应用程序，它统计给定输入数据集中每�
 
 假设:
 
-  * /user/joe/wordcount/input - HDFS中的输入目录
-  * /user/joe/wordcount/output - HDFS中的输出目录
+  * /user/joe/wordcount/input - HDFS 中的输入目录
+  * /user/joe/wordcount/output - HDFS 中的输出目录
 
 将文本文件作为示例的输入:
 
@@ -369,7 +369,7 @@ MapReduce - 用户接口
 
 让我们先来看看 Mapper 和 Reducer 接口。应用程序通常会实现这两个接口以提供 map 和 reduce 方法。
 
-然后，我们会讨论其他核心接口，包括 Job, Partitioner, InputFormat, OutputFormat 等等。
+然后，我们会讨论其他核心接口，包括 Job，Partitioner，InputFormat，OutputFormat 等等。
 
 最后，我们将讨论框架的一些实用功能，比如 DistributedCache，IsolationRunner 等等。
 
@@ -421,13 +421,13 @@ map 正确的并行度大概是每个节点 10-100 个 map，尽管有些 CPU �
 Reducer
 --------------------------------
 
-`Reducer <http://hadoop.apache.org/docs/current/api/org/apache/hadoop/mapreduce/Reducer.html>`_ 将共享一个key的一组中间值归并为一个小的数值集。
+`Reducer <http://hadoop.apache.org/docs/current/api/org/apache/hadoop/mapreduce/Reducer.html>`_ 将共享一个 key 的一组中间值归并为一个小的数值集。
 
 用户可以通过 `Job.setNumReduceTasks(int) <http://hadoop.apache.org/docs/current/api/org/apache/hadoop/mapreduce/Job.html>`_ 来设置作业的 reduce 数量。
 
 总的来说，Reducer 实现通过 `Job.setReducerClass(Class) <http://hadoop.apache.org/docs/current/api/org/apache/hadoop/mapreduce/Job.html>`_ 方法传递给作业，并可以重写它以初始化它们自己。然后，框架为分组输入中的每个 ``<key, (list of values)>`` 对调用 `reduce(WritableComparable, Iterable, Context) <http://hadoop.apache.org/docs/current/api/org/apache/hadoop/mapreduce/Reducer.html>`_ 方法。最后，应用程序可以重写 ``cleanup(Context)`` 方法来执行任何所需的清理工作。
 
-Reducer 有3个主要阶段: shuffle, sort 和 reduce。
+Reducer 有3个主要阶段: shuffle，sort 和 reduce。
 
 Shuffle
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -450,7 +450,7 @@ Secondary Sort
 Reduce
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-在这个阶段中, 会为分组输入中的每个 ``<key, (list of values)>`` 对调用 ``reduce(WritableComparable, Iterable<Writable>, Context)`` 方法。
+在这个阶段中，会为分组输入中的每个 ``<key, (list of values)>`` 对调用 ``reduce(WritableComparable, Iterable<Writable>, Context)`` 方法。
 
 reduce 任务的输出通常是通过 ``Context.write(WritableComparable, Writable)`` 写入 `文件系统 <http://hadoop.apache.org/docs/current/api/org/apache/hadoop/fs/FileSystem.html>`_ 的。
 
@@ -463,7 +463,7 @@ Reduce数量
 
 reduce 数量建议是 0.95 或 1.75 乘以 (节点数量 * 每个节点最大容器数量)。
 
-使用 0.95, 所有的 reduce 任务可以在 map 任务一完成时就立即启动并开始传输 map输出。如果使用 1.75，更快的节点将完成第一轮 reduce 任务并启动第二轮 reduce 任务，这样可以得到比较好的负载均衡的效果。
+使用 0.95，所有的 reduce 任务可以在 map 任务一完成时就立即启动并开始传输 map输出。如果使用 1.75，更快的节点将完成第一轮 reduce 任务并启动第二轮 reduce 任务，这样可以得到比较好的负载均衡的效果。
 
 增加 reduce 任务数量会增加框架的开销，但可以提升负载均衡并降低失败成本。
 
@@ -496,7 +496,7 @@ Counter
 
 Mapper 和 Reducer 实现可以使用 Counter 报告统计数据。
 
-Hadoop MapReduce 附带一个包含通用的 mapper, reducers 以及 partitioners 的 `类库 <http://hadoop.apache.org/docs/current/api/org/apache/hadoop/mapreduce/package-summary.html>`_ 。
+Hadoop MapReduce 附带一个包含通用的 mapper，reducers 以及 partitioners 的 `类库 <http://hadoop.apache.org/docs/current/api/org/apache/hadoop/mapreduce/package-summary.html>`_ 。
 
 .. _job_configuration:
 
@@ -576,7 +576,7 @@ mapreduce.map.sort.spill.percent          float                 序列化缓冲�
 其它说明
 
 * 如果溢出过程中超过溢出阈值，则收集将继续直到溢出完成。例如，如果 ``mapreduce.map.sort.spill.percent`` 设置为 0.33，并且在溢出运行时填充其余的缓冲区，则下一次溢出将包括所有收集的记录或缓冲区的0.66，并且不会产生额外的溢出。 换句话说，阈值是定义触发器的，而不是阻塞。
-* 如果记录大小超过了序列化缓冲区的大小, 首先会触发一个分割操作, 然后写到一个单独的文件中。没有定义记录是否需要先通过 combiner。
+* 如果记录大小超过了序列化缓冲区的大小，首先会触发一个分割操作，然后写到一个单独的文件中。没有定义记录是否需要先通过 combiner。
 
 
 .. _shuffle_reduce_parameters:
@@ -627,7 +627,7 @@ mapreduce.map.input.length            long                          map 端输�
 mapreduce.task.output.dir             String                        任务临时输出目录
 ================================      ========================      ========================
 
-.. attention:: 在 streaming 作业执行期间, 以 mapreduce 开头的参数名称会被转换。点号( . )变成了下划线( _ )。例如, mapreduce.job.id 变成 mapreduce_job_id，mapreduce.job.jar 变成 mapreduce_job_jar。要想在 streaming 作业的 mapper/reducer 过程中获取参数值，请使用带有下划线的参数名称。
+.. attention:: 在 streaming 作业执行期间，以 mapreduce 开头的参数名称会被转换。点号( . )变成了下划线( _ )。例如，``mapreduce.job.id`` 变成 mapreduce_job_id，mapreduce.job.jar 变成 mapreduce_job_jar。要想在 streaming 作业的 mapper/reducer 过程中获取参数值，请使用带有下划线的参数名称。
 
 
 .. _task_logs:
@@ -763,10 +763,10 @@ MapReduce 框架依赖作业的 OutputCommitter 来:
 #. 作业完成后清理作业。例如在任务完成后删除临时输出目录。作业清理是在作业结束时由单独的任务完成的。在清理任务完成后，作业被声明为 SUCCEDED/FAILED/KILLED。
 #. 设置任务临时输出。任务设置是在任务初始化期间作为同一任务的一部分完成的。
 #. 检查任务是否需要一个提交。这是为了避免提交过程，如果任务不需要提交的话。
-#. 提交任务输出。一旦任务完成, 如有必要任务将会提交它的输出。`
+#. 提交任务输出。一旦任务完成, 如有必要任务将会提交它的输出。
 #. 放弃任务提交。如果任务失败或终止, 任务输出将会被清理。如果任务无法清理(在异常块中)，则启动带有相同attempt-id的单独任务来执行清理。
 
-FileOutputCommitter 是默认的 OutputCommitter。作业设置/清理任务占用 map 或 reduce 容器, 无论 NodeManager 上哪个可用。JobCleanup 任务, TaskCleanup 任务 和 JobSetup 任务按顺序具有最高优先级。
+FileOutputCommitter 是默认的 OutputCommitter。作业设置/清理任务占用 map 或 reduce 容器，无论 NodeManager 上哪个可用。JobCleanup 任务, TaskCleanup 任务 和 JobSetup 任务按顺序具有最高优先级。
 
 
 .. _task_side_effect_files:
@@ -776,9 +776,9 @@ FileOutputCommitter 是默认的 OutputCommitter。作业设置/清理任务占�
 
 在某些应用程序中，组件任务需要创建 和/或 写入与实际作业输出文件不同的副文件中。
 
-在这种情况下, 如果同一个 Mapper 或者 Reducer 同时运行的两个实例(例如推测任务)试图打开和/或写入文件系统上的同一个文件(路径)就可能会有问题。因此应用程序编写者需要为每个任务尝试取一个独一无二的文件名(使用 attemptid，比如 attempt_200709221812_0001_m_000000_0), 而不仅仅是每个任务。
+在这种情况下，如果同一个 Mapper 或者 Reducer 同时运行的两个实例(例如推测任务)试图打开和/或写入文件系统上的同一个文件(路径)就可能会有问题。因此应用程序编写者需要为每个任务尝试取一个独一无二的文件名(使用 attemptid，比如 attempt_200709221812_0001_m_000000_0), 而不仅仅是每个任务。
 
-为了避免这些问题, 当 OutputCommitter 是 FileOutputCommitter 时, MapReduce 框架在文件系统上为每个任务尝试维护了一个特殊的 ``${mapreduce.output.fileoutputformat.outputdir}/_temporary/_${taskid}`` 子目录来存储任务尝试的输出，该目录可以通过 ``${mapreduce.task.output.dir}`` 访问。在任务尝试成功执行完成时, ``${mapreduce.output.fileoutputformat.outputdir}/_temporary/_${taskid}`` 中的文件(仅)会被移动到 ``${mapreduce.output.fileoutputformat.outputdir}`` 目录下。当然，框架会丢弃那些失败任务尝试的子目录。这个过程对于应用程序来说是完全透明的。
+为了避免这些问题，当 OutputCommitter 是 FileOutputCommitter 时，MapReduce 框架在文件系统上为每个任务尝试维护了一个特殊的 ``${mapreduce.output.fileoutputformat.outputdir}/_temporary/_${taskid}`` 子目录来存储任务尝试的输出，该目录可以通过 ``${mapreduce.task.output.dir}`` 访问。在任务尝试成功执行完成时, ``${mapreduce.output.fileoutputformat.outputdir}/_temporary/_${taskid}`` 中的文件(仅)会被移动到 ``${mapreduce.output.fileoutputformat.outputdir}`` 目录下。当然，框架会丢弃那些失败任务尝试的子目录。这个过程对于应用程序来说是完全透明的。
 
 应用程序编写者可以在任务执行期间通过 `FileOutputFormat.getWorkOutputPath(Context) <http://hadoop.apache.org/docs/current/api/org/apache/hadoop/mapreduce/lib/output/FileOutputFormat.html>`_ 在 ``${mapreduce.task.output.dir}`` 中创建任意需要的副文件来利用该功能，并且同样地对于成功的尝试框架会移动这些文件，因此不需要为每个任务尝试选取唯一路径。
 
@@ -964,7 +964,7 @@ Hadoop 提供了一个选项，可以在处理 map 端输入时跳过某些脏�
 源代码
 --------------------------------
 
-.. code-block:: Java
+.. code-block:: java
 
   import java.io.BufferedReader;
   import java.io.FileReader;
@@ -1191,6 +1191,6 @@ Hadoop 提供了一个选项，可以在处理 map 端输入时跳过某些脏�
 * 展示了应用程序如何在 Mapper (以及 Reducer) 中的 setup 方法中访问配置参数。
 * 展示了如何使用 DistributedCache 来分发作业所需的只读数据。这里允许用户指定单词模式，这样在计数时可以忽略那些符合模式的单词。
 * 展示了用于处理 Hadoop 通用命令行选项的实用程序 GenericOptionsParser。
-* 展示了应用程序如何使用 Counters, 以及如何设置传递给 map (和 reduce) 方法的特定于应用程序的状态信息。
+* 展示了应用程序如何使用 Counters，以及如何设置传递给 map (和 reduce) 方法的特定于应用程序的状态信息。
 
-Java 和 JNI 是 Oracle America, Inc 在美国和其他国家的商标或注册商标。
+Java 和 JNI 是 Oracle America，Inc 在美国和其他国家的商标或注册商标。
