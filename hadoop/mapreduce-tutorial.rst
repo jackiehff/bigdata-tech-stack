@@ -309,7 +309,7 @@ Mapper 实现中的 map 方法一次处理由指定 TextInputFormat 所提供的
 
   job.setCombinerClass(IntSumReducer.class);
 
-WordCount 还指定了一个 combiner。因此，在对键进行排序后，每个 map 的输出传递给本地 combiner (与每个作业配置中的Reducer相同) 进行本地聚合
+WordCount 还指定了一个 combiner。因此，在对键进行排序后，每个 map 的输出传递给本地 combiner (与每个作业配置中的Reducer相同) 进行本地聚合。
 
 第一个 map 的输出如下:
 
@@ -396,7 +396,7 @@ Hadoop MapReduce 框架为作业的 InputFormat 生成的每个 InputSplit 产�
 
 应用程序可以使用 Counter 报告其统计数据。
 
-所有与给定输出键相关的中间值随后由框架进行分组并传递给 Reducer 以确定最终输出。用户可以通过 `Job.setGroupingComparatorClass(Class) <http://hadoop.apache.org/docs/stable/api/org/apache/hadoop/mapreduce/Job.html`_ 指定一个比较器来控制分组。
+所有与给定输出键相关的中间值随后由框架进行分组并传递给 Reducer 以确定最终输出。用户可以通过 `Job.setGroupingComparatorClass(Class) <http://hadoop.apache.org/docs/stable/api/org/apache/hadoop/mapreduce/Job.html>`_ 指定一个比较器来控制分组。
 
 Mapper 输出会被排序，然后按 Reducer 进行分区。分区总数与作业的 reduce 任务数相同。用户可以实现一个自定义的分区控制器来控制哪些键(以及记录)分发到哪个Reducer。
 
@@ -412,7 +412,7 @@ map 的数量通常是由输入数据的总大小决定的，也就是输入文�
 
 map 正确的并行度大概是每个节点 10-100 个 map，尽管有些 CPU 轻量型 map 任务已经将其设置为 300个 map。任务设置需要一段时间，所以最好是 map 任务至少需要一分钟才能执行。
 
-因此，如果您希望输入 10TB 数据，并且块大小为 128MB，那么最终将有 82,000 个 map，除非用 ``Configuration.set(MRJobConfig.NUM_MAPS, int)``(仅向框架提供提示)进行设置, 否则 map 数量会更高。
+因此，如果您希望输入 10TB 数据，并且块大小为 128MB，那么最终将有 82,000 个 map，除非用 ``Configuration.set(MRJobConfig.NUM_MAPS, int)`` (仅向框架提供提示)进行设置, 否则 map 数量会更高。
 
 .. _payload_reducer:
 
@@ -423,7 +423,7 @@ Reducer
 
 用户可以通过 `Job.setNumReduceTasks(int) <http://hadoop.apache.org/docs/stable/api/org/apache/hadoop/mapreduce/Job.html>`_ 来设置作业的 reduce 数量。
 
-总的来说，Reducer 实现通过 `Job.setReducerClass(Class) http://hadoop.apache.org/docs/stable/api/org/apache/hadoop/mapreduce/Job.html>`_ 方法传递给作业，并可以重写它以初始化它们自己。然后，框架为分组输入中的每个 <key, (list of values)> 对调用 `reduce(WritableComparable, Iterable, Context) <http://hadoop.apache.org/docs/stable/api/org/apache/hadoop/mapreduce/Reducer.html>`_ 方法。最后，应用程序可以重写 ``cleanup(Context)`` 方法来执行任何所需的清理工作。
+总的来说，Reducer 实现通过 `Job.setReducerClass(Class) <http://hadoop.apache.org/docs/stable/api/org/apache/hadoop/mapreduce/Job.html>`_ 方法传递给作业，并可以重写它以初始化它们自己。然后，框架为分组输入中的每个 ``<key, (list of values)>`` 对调用 `reduce(WritableComparable, Iterable, Context) <http://hadoop.apache.org/docs/stable/api/org/apache/hadoop/mapreduce/Reducer.html>`_ 方法。最后，应用程序可以重写 ``cleanup(Context)`` 方法来执行任何所需的清理工作。
 
 Reducer 有3个主要阶段: shuffle, sort 和 reduce。
 
@@ -448,7 +448,7 @@ Secondary Sort
 Reduce
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-在这个阶段中, 会为分组输入中的每个 <key, (list of values)> 对调用 ``reduce(WritableComparable, Iterable<Writable>, Context)`` 方法。
+在这个阶段中, 会为分组输入中的每个 ``<key, (list of values)>`` 对调用 ``reduce(WritableComparable, Iterable<Writable>, Context)`` 方法。
 
 reduce 任务的输出通常是通过 ``Context.write(WritableComparable, Writable)`` 写入 `文件系统 <http://hadoop.apache.org/docs/stable/api/org/apache/hadoop/fs/FileSystem.html>`_ 的。
 
@@ -517,7 +517,7 @@ Job 是用户向 Hadoop 框架描述一个 MapReduce 作业如何执行的主要
 
 .. _task_execution_and_environment:
 
-Task Execution & Environment
+任务执行和环境
 ================================
 
 MRAppMaster 在一个独立的 jvm 中作为子进程执行 Mapper/Reducer 任务。
@@ -559,40 +559,40 @@ MRAppMaster 在一个独立的 jvm 中作为子进程执行 Mapper/Reducer 任�
 
 .. _map_parameters:
 
-Map参数
+Map 参数
 --------------------------------
 
 从 map 端输出的记录将被序列化到一个缓冲区中，并且记录的元数据将被存储到记帐缓冲区中。如以下选项所述，当序列化缓冲区或元数据超过阈值时，缓冲区的内容将在后台进行排序并写入到磁盘上，而 map 端继续输出记录。如果任何一个缓冲区在分隔过程中被完全填满，则 map 线程被阻塞。 当 map 完成后，剩余的任何记录都将写入磁盘并且所有磁盘上的段会合并到一个文件中。 尽量减少写到磁盘的分片数量可以缩短 map 时间，但是更大的缓冲区也会减少 mapper 的可用内存。
 
-====================================      ========      ================================================================
-参数名称                                   参数类型       参数说明
-====================================      ========      ================================================================
-mapreduce.task.io.sort.mb                 int           存储从 map 端输出记录的序列化和记帐缓冲区的总大小, 以兆字节(MB)为单位。
-mapreduce.map.sort.spill.percent          float         序列化缓冲区的软限制。一旦到达该阈值，一个后台线程开始将内容写到磁盘中。
-====================================      ========      ================================================================
+====================================      ================      ================
+参数名称                                   参数类型               参数说明
+====================================      ================      ================
+mapreduce.task.io.sort.mb                 int                   存储从 map 端输出记录的序列化和记帐缓冲区的总大小, 以兆字节(MB)为单位。
+mapreduce.map.sort.spill.percent          float                 序列化缓冲区的软限制。一旦到达该阈值，一个后台线程开始将内容写到磁盘中。
+====================================      ================      ================
 
 其它说明
 
-* 如果溢出过程中超过溢出阈值，则收集将继续直到溢出完成。例如，如果mapreduce.map.sort.spill.percent设置为0.33，并且在溢出运行时填充其余的缓冲区，则下一次溢出将包括所有收集的记录或缓冲区的0.66，并且不会产生额外的溢出。 换句话说，阈值是定义触发器的，而不是阻塞。
+* 如果溢出过程中超过溢出阈值，则收集将继续直到溢出完成。例如，如果 ``mapreduce.map.sort.spill.percent`` 设置为 0.33，并且在溢出运行时填充其余的缓冲区，则下一次溢出将包括所有收集的记录或缓冲区的0.66，并且不会产生额外的溢出。 换句话说，阈值是定义触发器的，而不是阻塞。
 * 如果记录大小超过了序列化缓冲区的大小, 首先会触发一个分割操作, 然后写到一个单独的文件中。没有定义记录是否需要先通过 combiner。
 
 
 .. _shuffle_reduce_parameters:
 
-Shuffle/Reduce参数
+Shuffle/Reduce 参数
 --------------------------------
 
 如前面所述，每个 reduce 会将分区程序分配给它的输出通过 HTTP 提取到内存中，并且定期将这些输出合并到磁盘。如果 map 输出的中间压缩打开，则每个输出都会解压缩到内存中。 以下选项影响在 reduce 期间这些合并到磁盘的频率和分配给映射输出的内存的频率。
 
-==================================================      ========      ======================
-参数名称                                                 参数类型       参数说明
-==================================================      ========      ======================
-mapreduce.task.io.soft.factor                           int           Specifies the number of segments on disk to be merged at the same time. It limits the number of open files and compression codecs during merge. If the number of files exceeds this limit, the merge will proceed in several passes. Though this limit also applies to the map, most jobs should be configured so that hitting this limit is unlikely there.
-mapreduce.reduce.merge.inmem.thresholds                 int           The number of sorted map outputs fetched into memory before being merged to disk. Like the spill thresholds in the preceding note, this is not defining a unit of partition, but a trigger. In practice, this is usually set very high (1000) or disabled (0), since merging in-memory segments is often less expensive than merging from disk (see notes following this table). This threshold influences only the frequency of in-memory merges during the shuffle.
-mapreduce.reduce.shuffle.merge.percent                  float         The memory threshold for fetched map outputs before an in-memory merge is started, expressed as a percentage of memory allocated to storing map outputs in memory. Since map outputs that can’t fit in memory can be stalled, setting this high may decrease parallelism between the fetch and merge. Conversely, values as high as 1.0 have been effective for reduces whose input can fit entirely in memory. This parameter influences only the frequency of in-memory merges during the shuffle.
-mapreduce.reduce.shuffle.input.buffer.percent           float         The percentage of memory- relative to the maximum heapsize as typically specified in mapreduce.reduce.java.opts- that can be allocated to storing map outputs during the shuffle. Though some memory should be set aside for the framework, in general it is advantageous to set this high enough to store large and numerous map outputs.
-mapreduce.reduce.input.buffer.percent                   float         The percentage of memory relative to the maximum heapsize in which map outputs may be retained during the reduce. When the reduce begins, map outputs will be merged to disk until those that remain are under the resource limit this defines. By default, all map outputs are merged to disk before the reduce begins to maximize the memory available to the reduce. For less memory-intensive reduces, this should be increased to avoid trips to disk.
-==================================================      ========      ======================
+==================================================      ======================      ======================
+参数名称                                                 参数类型                     参数说明
+==================================================      ======================      ======================
+mapreduce.task.io.soft.factor                           int                         Specifies the number of segments on disk to be merged at the same time. It limits the number of open files and compression codecs during merge. If the number of files exceeds this limit, the merge will proceed in several passes. Though this limit also applies to the map, most jobs should be configured so that hitting this limit is unlikely there.
+mapreduce.reduce.merge.inmem.thresholds                 int                         The number of sorted map outputs fetched into memory before being merged to disk. Like the spill thresholds in the preceding note, this is not defining a unit of partition, but a trigger. In practice, this is usually set very high (1000) or disabled (0), since merging in-memory segments is often less expensive than merging from disk (see notes following this table). This threshold influences only the frequency of in-memory merges during the shuffle.
+mapreduce.reduce.shuffle.merge.percent                  float                       The memory threshold for fetched map outputs before an in-memory merge is started, expressed as a percentage of memory allocated to storing map outputs in memory. Since map outputs that can’t fit in memory can be stalled, setting this high may decrease parallelism between the fetch and merge. Conversely, values as high as 1.0 have been effective for reduces whose input can fit entirely in memory. This parameter influences only the frequency of in-memory merges during the shuffle.
+mapreduce.reduce.shuffle.input.buffer.percent           float                       The percentage of memory- relative to the maximum heapsize as typically specified in mapreduce.reduce.java.opts- that can be allocated to storing map outputs during the shuffle. Though some memory should be set aside for the framework, in general it is advantageous to set this high enough to store large and numerous map outputs.
+mapreduce.reduce.input.buffer.percent                   float                       The percentage of memory relative to the maximum heapsize in which map outputs may be retained during the reduce. When the reduce begins, map outputs will be merged to disk until those that remain are under the resource limit this defines. By default, all map outputs are merged to disk before the reduce begins to maximize the memory available to the reduce. For less memory-intensive reduces, this should be increased to avoid trips to disk.
+==================================================      ======================      ======================
 
 
 其它说明
@@ -609,21 +609,21 @@ mapreduce.reduce.input.buffer.percent                   float         The percen
 
 以下属性在每个任务执行的作业配置中进行了本地化:
 
-================================      ========      ========================
-名称                                   类型           描述
-================================      ========      ========================
-mapreduce.job.id                      String        作业ID
-mapreduce.job.jar                     String        作业目录下 job.jar 的路径
-mapreduce.job.local.dir               String        作业特有的共享临时空间
-mapreduce.task.id                     String        任务ID
-mapreduce.task.attempt.id             String        任务尝试ID
-mapreduce.task.is.map                 boolean       是否是 map 任务
-mapreduce.task.partition              int           作业内的任务ID
-mapreduce.map.input.file              String        map 端读取数据的文件名
-mapreduce.map.input.start             long          map 端输入分片起始偏移量
-mapreduce.map.input.length            long          map 端输入分片的字节大小
-mapreduce.task.output.dir             String        任务临时输出目录
-================================      ========      ========================
+================================      ========================      ========================
+参数名称                               参数类型                       参数说明
+================================      ========================      ========================
+mapreduce.job.id                      String                        作业ID
+mapreduce.job.jar                     String                        作业目录下 job.jar 的路径
+mapreduce.job.local.dir               String                        作业特有的共享临时空间
+mapreduce.task.id                     String                        任务ID
+mapreduce.task.attempt.id             String                        任务尝试ID
+mapreduce.task.is.map                 boolean                       是否是 map 任务
+mapreduce.task.partition              int                           作业内的任务ID
+mapreduce.map.input.file              String                        map 端读取数据的文件名
+mapreduce.map.input.start             long                          map 端输入分片起始偏移量
+mapreduce.map.input.length            long                          map 端输入分片的字节大小
+mapreduce.task.output.dir             String                        任务临时输出目录
+================================      ========================      ========================
 
 .. attention:: 在 streaming 作业执行期间, 以 mapreduce 开头的参数名称会被转换。点号( . )变成了下划线( _ )。例如, mapreduce.job.id 变成 mapreduce_job_id，mapreduce.job.jar 变成 mapreduce_job_jar。要想在 streaming 作业的 mapper/reducer 过程中获取参数值，请使用带有下划线的参数名称。
 
